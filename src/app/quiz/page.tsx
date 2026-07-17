@@ -1,8 +1,18 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+// 定义题目类型接口
+interface Question {
+  _id: string;
+  type: 'choice' | 'blank';
+  stem: string;
+  options: string[];
+  answer: string;
+  explanation: string;
+}
+
 export default function QuizPage() {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
@@ -27,7 +37,7 @@ export default function QuizPage() {
       <h1 className="text-xl font-bold mb-4">练习模式 (题目 {currentIndex + 1}/{questions.length})</h1>
       <div className="border p-6 rounded shadow">
         <p className="mb-4 font-semibold">{question.stem}</p>
-        {question.type === 'choice' && question.options.map((opt: string) => (
+        {question.type === 'choice' && question.options && question.options.map((opt: string) => (
           <button
             key={opt}
             onClick={() => handleAnswer(opt.charAt(0))}
